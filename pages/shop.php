@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "db.php";
+include "../db.php";
 
 if(!isset($_SESSION['username'])) {
     header("Location: index.php");
@@ -141,7 +141,7 @@ $result = mysqli_query($conn, "SELECT * FROM products");
     <div class="products">
         <?php while($row = mysqli_fetch_assoc($result)) { ?>
         <div class="card">
-            <img src="assets/images/<?php echo $row['image']; ?>">
+            <img src="../assets/images/<?php echo $row['image']; ?>">
             <h3><?php echo $row['name']; ?></h3>
             <p class="price">Rp <?php echo number_format($row['price']); ?></p>
             <a href="product.php?id=<?php echo $row['id']; ?>" class="btn">

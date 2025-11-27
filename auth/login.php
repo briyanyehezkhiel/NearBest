@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Daftar Akun</title>
+    <title>Masuk Akun</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,7 +16,7 @@
             background: #fff;
             padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         input {
             width: 90%;
@@ -34,27 +34,30 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
+            margin-top: 10px;
         }
-        button:hover{
+        button:hover {
             opacity: 0.9;
         }
         a {
             text-decoration: none;
             color: #3b2db2;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Daftar Akun</h2>
-    <form action="process_register.php" method="POST">
+    <h2>Masuk Akun</h2>
+    <form action="process_login.php" method="POST">
         <input type="text" name="username" placeholder="Username" required>
-        <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
-        <button type="submit" name="register">Daftar</button>
+        <button type="submit" name="login">Masuk</button>
     </form>
-    <p>Sudah punya akun? <a href="index.php">Masuk</a></p>
+
+    <p><a href="#">Lupa Password?</a></p>
+    <p>Belum punya akun? <a href="register.php">Daftar</a></p>
 </div>
 
 </body>

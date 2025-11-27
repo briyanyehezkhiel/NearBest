@@ -50,7 +50,7 @@ if (!isset($_SESSION['username'])) {
 
     <a href="shop.php">Belanja Sekarang</a>
     <a href="#">Profil</a>
-    <a href="#">Keranjang</a>
+    <a href="cart.php">Keranjang</a>
 
     <form action="logout.php" method="POST">
         <button type="submit">Logout</button>

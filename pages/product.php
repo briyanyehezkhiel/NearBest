@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "db.php";
+include "../db.php";
 
 if (!isset($_SESSION['username'])) {
     header("Location: index.php");
@@ -33,7 +33,7 @@ $product = mysqli_fetch_assoc($result);
 
 <div class="container">
     <h2><?php echo $product['name']; ?></h2>
-    <img src="assets/images/<?php echo $product['image']; ?>" alt="">
+    <img src="../assets/images/<?php echo $product['image']; ?>" alt="">
     <p class="price">Rp <?php echo number_format($product['price']); ?></p>
     <p><?php echo $product['description']; ?></p>
 

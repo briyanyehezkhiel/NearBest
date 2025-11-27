@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "db.php";
+include "../db.php";
 
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
@@ -14,7 +14,7 @@ if (isset($_POST['login'])) {
 
         if (password_verify($password, $row['password'])) {
             $_SESSION['username'] = $row['username'];
-            header("Location: dashboard.php");
+            header("Location: ../pages/dashboard.php");
             exit;
         } else {
             echo "Password salah!";
