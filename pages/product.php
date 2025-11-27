@@ -7,9 +7,33 @@ if(!isset($_SESSION['username'])) {
     exit;
 }
 
-$id = $_GET['id'];
-$result = mysqli_query($conn, "SELECT * FROM products WHERE id=$id");
+$id = (int)$_GET['id'];
+$id_escaped = mysqli_real_escape_string($conn, $id);
+
+// Ambil produk dengan info seller
+$sql = "SELECT p.*, u.username as seller_username, u.role as seller_role
+        FROM products p
+        LEFT JOIN users u ON p.seller_id = u.id
+        WHERE p.id='$id_escaped'";
+$result = mysqli_query($conn, $sql);
 $product = mysqli_fetch_assoc($result);
+
+if(!$product) {
+    header("Location: shop.php?error=product_not_found");
+    exit;
+}
+
+// Ambil info toko seller
+$seller_info = [];
+$seller_username = !empty($product['seller_username']) ? $product['seller_username'] : 'admin';
+
+if($seller_username != 'admin') {
+    $store_sql = "SELECT * FROM stores WHERE seller_username='" . mysqli_real_escape_string($conn, $seller_username) . "' LIMIT 1";
+    $store_result = mysqli_query($conn, $store_sql);
+    if($store_result && $store = mysqli_fetch_assoc($store_result)) {
+        $seller_info = $store;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -93,6 +117,29 @@ body{font-family:Arial;background:#f6f6f6;margin:0}
             : "<span style='color:#999;'>Belum ada tags</span>";
     ?>
 </p>
+
+<!-- Seller Info -->
+<?php if(!empty($seller_info) || $seller_username != 'admin'): ?>
+<div style="background:#e3f2fd; padding:20px; border-radius:12px; margin:20px 0; border-left:4px solid #2196F3;">
+    <h3 style="color:#1976d2; margin-bottom:15px; font-size:18px;">🏪 Informasi Penjual</h3>
+    <?php if(!empty($seller_info)): ?>
+        <p style="margin:8px 0; color:#333;"><strong>Nama Toko:</strong> <?php echo htmlspecialchars($seller_info['store_name']); ?></p>
+        <p style="margin:8px 0; color:#666; font-size:14px;"><?php echo htmlspecialchars($seller_info['store_address']); ?></p>
+        <?php if(!empty($seller_info['store_phone'])): ?>
+        <p style="margin:8px 0; color:#666; font-size:14px;"><strong>Telepon:</strong> <?php echo htmlspecialchars($seller_info['store_phone']); ?></p>
+        <?php endif; ?>
+        <?php if(!empty($seller_info['store_description'])): ?>
+        <p style="margin:8px 0; color:#666; font-size:14px;"><?php echo htmlspecialchars($seller_info['store_description']); ?></p>
+        <?php endif; ?>
+    <?php else: ?>
+        <p style="margin:8px 0; color:#666;"><strong>Penjual:</strong> <?php echo htmlspecialchars($seller_username); ?></p>
+    <?php endif; ?>
+    <a href="chat.php?to=<?php echo htmlspecialchars($seller_username); ?>" 
+       style="display:inline-block; margin-top:10px; padding:8px 16px; background:#2196F3; color:white; text-decoration:none; border-radius:6px; font-size:14px; font-weight:500;">
+       💬 Chat dengan Penjual
+    </a>
+</div>
+<?php endif; ?>
 
 <hr style="margin:20px 0;">
 

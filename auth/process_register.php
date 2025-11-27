@@ -10,7 +10,7 @@ if (isset($_POST['register'])) {
     $result = mysqli_query($conn, $sql);
 
     if ($result) {
-        echo "Registrasi berhasil! <a href='index.php'>Login sekarang</a>";
+        echo "Registrasi berhasil! <a href='../index.php'>Login sekarang</a>";
     } else {
         echo "Gagal registrasi: " . mysqli_error($conn);
     }

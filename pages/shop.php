@@ -20,14 +20,14 @@ $result = mysqli_query($conn, "SELECT * FROM products");
     body { background:#f6f6f6; }
 
     /* Navbar */
-    nav {
+    /* nav {
         background: #3b2db2;
         padding: 15px 100px;
         display:flex;
         justify-content:space-between;
         align-items:center;
         color:white;
-    }
+    } */
     nav .brand {
         font-size:28px;
         font-weight:bold;

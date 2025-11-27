@@ -84,7 +84,9 @@ img {width:70px;border-radius:10px;object-fit:cover;}
     <p class="right">Subtotal: Rp <?php echo number_format($total); ?></p>
     <p class="right">Total: Rp <?php echo number_format($total); ?></p>
     <br>
-    <a href="checkout.php" class="btn" style="float:right;">Proceed to Checkout</a>
+    <form action="process_checkout.php" method="POST" style="float:right;">
+        <button type="submit" class="btn" style="border:none;cursor:pointer;">Proceed to Checkout</button>
+    </form>
 </div>
 
 <?php } else { ?>
