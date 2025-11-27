@@ -43,6 +43,7 @@ if (!isset($_SESSION['username'])) {
 </style>
 </head>
 <body>
+<?php include "../includes/header.php"; ?>
 
 <div class="container">
     <h2>Selamat Datang 👋</h2>
@@ -56,6 +57,7 @@ if (!isset($_SESSION['username'])) {
         <button type="submit">Logout</button>
     </form>
 </div>
+<?php include "../includes/footer.php"; ?>
 
 </body>
 </html>

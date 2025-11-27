@@ -3,7 +3,7 @@ session_start();
 include "../db.php";
 
 if(!isset($_SESSION['username'])) {
-    header("Location: index.php");
+    header("Location: ../auth/login.php"); // fix redirect
     exit;
 }
 
@@ -44,7 +44,7 @@ $result = mysqli_query($conn, "SELECT * FROM products");
     .banner {
         width:100%;
         height:350px;
-        background:url('assets/images/banner1.jpg');
+        background:url('../assets/images/banner1.jpg');
         background-size:cover;
         background-position:center;
         display:flex;
@@ -65,6 +65,30 @@ $result = mysqli_query($conn, "SELECT * FROM products");
         text-decoration:none;
         font-weight:bold;
     }
+
+    /* Category */
+    .categories {
+        width:1100px;
+        margin:40px auto;
+    }
+    .categories h2 {
+        font-size:22px;
+        margin-bottom:20px;
+    }
+    .cat-box {
+        display:flex; gap:20px; justify-content:space-between;
+    }
+    .cat-item {
+        width:150px;
+        height:130px;
+        background:#fff;
+        border-radius:12px;
+        display:flex; flex-direction:column;
+        align-items:center; justify-content:center;
+        box-shadow:0 3px 10px rgba(0,0,0,.07);
+    }
+    .cat-item img { width:50px; }
+    .cat-item p { margin-top:10px; }
 
     /* Product Section */
     .container {
@@ -89,7 +113,6 @@ $result = mysqli_query($conn, "SELECT * FROM products");
         transition:.3s;
     }
     .card:hover { transform:translateY(-5px); }
-
     .card img {
         width:100%;
         height:180px;
@@ -117,17 +140,9 @@ $result = mysqli_query($conn, "SELECT * FROM products");
 </style>
 </head>
 <body>
+<?php include "../includes/header.php"; ?>
 
-<nav>
-    <div class="brand">NearBest</div>
-    <div class="menu">
-        <a href="shop.php">Shop</a>
-        <a href="cart.php">Keranjang</a>
-        <a href="logout.php">Logout</a>
-    </div>
-</nav>
-
-<div class="banner">
+<div class="banner" style="background:brown ;">
     <div>
         <h1>50% OFF</h1>
         <p>Lorem ipsum dolor sit amet consectetur.</p>
@@ -135,31 +150,61 @@ $result = mysqli_query($conn, "SELECT * FROM products");
     </div>
 </div>
 
+<!-- ⭐ CATEGORY SECTION START -->
+<div class="categories">
+    <h2>Category</h2>
+    <div class="cat-box">
+        <div class="cat-item">
+            <img src="../assets/images/cat-food.png">
+            <p>Foods</p>
+        </div>
+        <div class="cat-item">
+            <img src="../assets/images/cat-drink.png">
+            <p>Drinks</p>
+        </div>
+        <div class="cat-item">
+            <img src="../assets/images/cat-snack.png">
+            <p>Snacks</p>
+        </div>
+        <div class="cat-item">
+            <img src="../assets/images/cat-dairy.png">
+            <p>Dairy</p>
+        </div>
+        <div class="cat-item">
+            <img src="../assets/images/cat-cleaning.png">
+            <p>Cleaning</p>
+        </div>
+    </div>
+</div>
+<!-- ⭐ CATEGORY SECTION END -->
+
 <div class="container">
     <h2 class="title-sec">Product List</h2>
 
     <div class="products">
         <?php while($row = mysqli_fetch_assoc($result)) { ?>
         <div class="card">
-            <img src="../assets/images/<?php echo $row['image']; ?>">
+            <img src="../assets/images/<?php echo $row['image']; ?>" alt="">
             <h3><?php echo $row['name']; ?></h3>
             <p class="price">Rp <?php echo number_format($row['price']); ?></p>
-            <a href="product.php?id=<?php echo $row['id']; ?>" class="btn">
-                Detail Produk
-            </a>
+            <a href="product.php?id=<?php echo $row['id']; ?>" class="btn">Detail Produk</a>
         </div>
         <?php } ?>
     </div>
+
     <!-- Promo Section -->
-<div style="margin-top:60px; padding:40px; background:#3b2db2; color:white;
-           border-radius:12px; text-align:center;">
-    <h2>23% off in all products</h2>
-    <p>Shop Now! Promo Terbatas</p>
-    <a href="shop.php"
-       style="background:white;color:#3b2db2;padding:10px 20px;border-radius:8px;
-              text-decoration:none;font-weight:bold;">Shop Now</a>
+    <div style="margin-top:60px; padding:40px; background:#3b2db2; color:white;
+                border-radius:12px; text-align:center;">
+        <h2>23% off in all products</h2>
+        <p>Shop Now! Promo Terbatas</p>
+        <br>
+        <a href="shop.php"
+        style="background:white;color:#3b2db2;padding:10px 20px;border-radius:8px;
+               text-decoration:none;font-weight:bold;">Shop Now</a>
+    </div>
+
 </div>
-</div>
+<?php include "../includes/footer.php"; ?>
 
 </body>
 </html>
