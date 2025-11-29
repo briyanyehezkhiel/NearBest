@@ -1,0 +1,233 @@
+<?php
+session_start();
+include "../db.php";
+
+if(!isset($_SESSION['username'])) {
+    header("Location: ../auth/login.php");
+    exit;
+}
+
+$q = isset($_GET['q']) ? trim($_GET['q']) : '';
+$category = isset($_GET['category']) ? trim($_GET['category']) : '';
+$where = [];
+if($q !== '') {
+    $q_escaped = mysqli_real_escape_string($conn, $q);
+    $where[] = "(name LIKE '%$q_escaped%' OR tags LIKE '%$q_escaped%')";
+}
+if($category !== '') {
+    $cat_escaped = mysqli_real_escape_string($conn, $category);
+    $where[] = "LOWER(category) = LOWER('$cat_escaped')";
+}
+$where_sql = count($where)>0 ? ('WHERE '.implode(' AND ', $where)) : '';
+$result = mysqli_query($conn, "SELECT * FROM products $where_sql ORDER BY id DESC");
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>NearBest Shop</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family: Arial; }
+
+    body { background:#f6f6f6; }
+
+    /* Navbar */
+    /* nav {
+        background: #3b2db2;
+        padding: 15px 100px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        color:white;
+    } */
+    nav .brand {
+        font-size:28px;
+        font-weight:bold;
+    }
+    nav .menu a {
+        margin-left:20px;
+        color:white;
+        text-decoration:none;
+        font-weight:500;
+    }
+    nav .menu a:hover { opacity:.8; }
+
+    /* Banner */
+    .banner {
+        width:100%;
+        height:350px;
+        background:url('../assets/images/banner1.jpg');
+        background-size:cover;
+        background-position:center;
+        display:flex;
+        align-items:center;
+        color:white;
+        padding-left:100px;
+    }
+    .banner h1 { font-size:48px; max-width:300px; }
+    .banner p {
+        font-size:20px; margin:10px 0;
+        max-width:350px;
+    }
+    .btn-shop {
+        background:white;
+        color:#3b2db2;
+        padding:10px 20px;
+        border-radius:8px;
+        text-decoration:none;
+        font-weight:bold;
+    }
+
+    /* Category */
+    .categories {
+        width:1100px;
+        margin:40px auto;
+    }
+    .categories h2 {
+        font-size:22px;
+        margin-bottom:20px;
+    }
+    .cat-box {
+        display:flex; gap:20px; justify-content:space-between;
+    }
+    .cat-item {
+        width:150px;
+        height:130px;
+        background:#fff;
+        border-radius:12px;
+        display:flex; flex-direction:column;
+        align-items:center; justify-content:center;
+        box-shadow:0 3px 10px rgba(0,0,0,.07);
+        text-decoration:none; color:#333;
+    }
+    .cat-item img { width:50px; }
+    .cat-item p { margin-top:10px; }
+
+    /* Product Section */
+    .container {
+        width:1100px;
+        margin:50px auto;
+    }
+    .title-sec {
+        font-size:26px;
+        margin-bottom:20px;
+    }
+    .products {
+        display:grid;
+        grid-template-columns:repeat(3, 1fr);
+        gap:25px;
+    }
+    .card {
+        background:#fff;
+        padding:15px;
+        border-radius:12px;
+        text-align:center;
+        box-shadow:0 3px 15px rgba(0,0,0,0.1);
+        transition:.3s;
+    }
+    .card:hover { transform:translateY(-5px); }
+    .card img {
+        width:100%;
+        height:180px;
+        object-fit:cover;
+        border-radius:10px;
+    }
+    .price {
+        margin:8px 0;
+        font-size:18px;
+        font-weight:bold;
+        color:#3b2db2;
+    }
+    .btn {
+        display:inline-block;
+        margin-top:8px;
+        padding:8px 14px;
+        background:#3b2db2;
+        color:white;
+        text-decoration:none;
+        border-radius:8px;
+        transition:.2s;
+    }
+    .btn:hover { background:#2c2297; }
+
+</style>
+</head>
+<body>
+<?php include "../includes/header.php"; ?>
+
+<div class="banner" style="background:brown ;">
+    <div>
+        <h1>50% OFF</h1>
+        <p>Lorem ipsum dolor sit amet consectetur.</p>
+        <a href="shop.php" class="btn-shop">Shop Now</a>
+    </div>
+</div>
+
+<!-- ⭐ CATEGORY SECTION START -->
+<div class="categories">
+    <h2>Category</h2>
+    <div class="cat-box">
+        <a class="cat-item" href="shop.php?category=Foods">
+            <img src="../assets/images/cat-food.png">
+            <p>Foods</p>
+        </a>
+        <a class="cat-item" href="shop.php?category=Drinks">
+            <img src="../assets/images/cat-drink.png">
+            <p>Drinks</p>
+        </a>
+        <a class="cat-item" href="shop.php?category=Snacks">
+            <img src="../assets/images/cat-snack.png">
+            <p>Snacks</p>
+        </a>
+        <a class="cat-item" href="shop.php?category=Dairy">
+            <img src="../assets/images/cat-dairy.png">
+            <p>Dairy</p>
+        </a>
+        <a class="cat-item" href="shop.php?category=Cleaning">
+            <img src="../assets/images/cat-cleaning.png">
+            <p>Cleaning</p>
+        </a>
+    </div>
+</div>
+<!-- ⭐ CATEGORY SECTION END -->
+
+<div class="container">
+    <h2 class="title-sec">Product List</h2>
+
+    <form method="GET" action="shop.php" style="margin-bottom:15px;display:flex;gap:8px;">
+        <input type="text" name="q" value="<?=htmlspecialchars($q)?>" placeholder="Cari produk..." style="flex:1;padding:10px;border:1px solid #ddd;border-radius:8px">
+        <?php if($category!==''): ?><input type="hidden" name="category" value="<?=htmlspecialchars($category)?>"><?php endif; ?>
+        <button class="btn" style="border:none;cursor:pointer">Search</button>
+        <a href="shop.php" class="btn" style="background:#6c757d">Reset</a>
+    </form>
+
+    <div class="products">
+        <?php while($row = mysqli_fetch_assoc($result)) { ?>
+        <div class="card">
+            <img src="../assets/images/<?php echo $row['image']; ?>" alt="">
+            <h3><?php echo $row['name']; ?></h3>
+            <p class="price">Rp <?php echo number_format($row['price']); ?></p>
+            <?php if(!empty($row['category'])): ?>
+            <div style="font-size:12px;color:#666;">Kategori: <a href="shop.php?category=<?=urlencode($row['category'])?>" style="color:#3b2db2;text-decoration:none;"><?=htmlspecialchars($row['category'])?></a></div>
+            <?php endif; ?>
+            <a href="product.php?id=<?php echo $row['id']; ?>" class="btn">Detail Produk</a>
+        </div>
+        <?php } ?>
+    </div>
+
+    <!-- Promo Section -->
+    <div style="margin-top:60px; padding:40px; background:#3b2db2; color:white;
+                border-radius:12px; text-align:center;">
+        <h2>23% off in all products</h2>
+        <p>Shop Now! Promo Terbatas</p>
+        <br>
+        <a href="shop.php"
+        style="background:white;color:#3b2db2;padding:10px 20px;border-radius:8px;
+               text-decoration:none;font-weight:bold;">Shop Now</a>
+    </div>
+
+</div>
+<?php include "../includes/footer.php"; ?>
+
+</body>
+</html>
