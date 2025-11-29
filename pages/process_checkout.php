@@ -53,57 +53,59 @@ foreach($cart as $product_id => $qty) {
     }
 }
 
-// Jika ada produk dari seller berbeda, ambil seller pertama (atau bisa split order nanti)
-// Untuk sekarang, ambil seller dari produk pertama
-$seller_username = !empty($order_items_data) ? $order_items_data[0]['seller_username'] : 'admin';
-
-// Ambil info toko seller
-$seller_store_name = '';
-$seller_store_address = '';
-$stores_table_check = mysqli_query($conn, "SHOW TABLES LIKE 'stores'");
-if($stores_table_check && mysqli_num_rows($stores_table_check) > 0) {
-    $store_sql = "SELECT * FROM stores WHERE seller_username='" . mysqli_real_escape_string($conn, $seller_username) . "' LIMIT 1";
-    $store_result = mysqli_query($conn, $store_sql);
-    if($store_result && $store = mysqli_fetch_assoc($store_result)) {
-        $seller_store_name = $store['store_name'];
-        $seller_store_address = $store['store_address'];
-    }
-}
-
-// Simpan order
+// Split order per seller
 $buyer_escaped = mysqli_real_escape_string($conn, $buyer_username);
-$seller_escaped = mysqli_real_escape_string($conn, $seller_username);
-$total_escaped = mysqli_real_escape_string($conn, $total);
-$store_name_escaped = mysqli_real_escape_string($conn, $seller_store_name);
-$store_address_escaped = mysqli_real_escape_string($conn, $seller_store_address);
+$created_orders = [];
 
-// Cek apakah kolom seller_store_name ada
+// Cek kolom toko opsional
 $column_check = mysqli_query($conn, "SHOW COLUMNS FROM orders LIKE 'seller_store_name'");
 $has_store_columns = $column_check && mysqli_num_rows($column_check) > 0;
 
-if($has_store_columns) {
-    $order_sql = "INSERT INTO orders (buyer_username, seller_username, seller_store_name, seller_store_address, total_amount, status) 
-                  VALUES ('$buyer_escaped', '$seller_escaped', '$store_name_escaped', '$store_address_escaped', '$total_escaped', 'pending')";
-} else {
-    $order_sql = "INSERT INTO orders (buyer_username, seller_username, total_amount, status) 
-                  VALUES ('$buyer_escaped', '$seller_escaped', '$total_escaped', 'pending')";
-}
+foreach($sellers_data as $seller_username => $item_indexes){
+    $seller_escaped = mysqli_real_escape_string($conn, $seller_username);
+    // Hitung total per seller
+    $seller_total = 0;
+    foreach($item_indexes as $idx){ $seller_total += (float)$order_items_data[$idx]['subtotal']; }
+    $total_escaped = mysqli_real_escape_string($conn, $seller_total);
 
-if(mysqli_query($conn, $order_sql)) {
+    // Ambil info toko seller
+    $seller_store_name = '';
+    $seller_store_address = '';
+    $stores_table_check = mysqli_query($conn, "SHOW TABLES LIKE 'stores'");
+    if($stores_table_check && mysqli_num_rows($stores_table_check) > 0) {
+        $store_sql = "SELECT * FROM stores WHERE seller_username='" . mysqli_real_escape_string($conn, $seller_username) . "' LIMIT 1";
+        $store_result = mysqli_query($conn, $store_sql);
+        if($store_result && $store = mysqli_fetch_assoc($store_result)) {
+            $seller_store_name = $store['store_name'];
+            $seller_store_address = $store['store_address'];
+        }
+    }
+
+    $store_name_escaped = mysqli_real_escape_string($conn, $seller_store_name);
+    $store_address_escaped = mysqli_real_escape_string($conn, $seller_store_address);
+
+    // Simpan satu order untuk seller ini
+    if($has_store_columns) {
+        $order_sql = "INSERT INTO orders (buyer_username, seller_username, seller_store_name, seller_store_address, total_amount, status) 
+                      VALUES ('$buyer_escaped', '$seller_escaped', '$store_name_escaped', '$store_address_escaped', '$total_escaped', 'pending')";
+    } else {
+        $order_sql = "INSERT INTO orders (buyer_username, seller_username, total_amount, status) 
+                      VALUES ('$buyer_escaped', '$seller_escaped', '$total_escaped', 'pending')";
+    }
+    if(!mysqli_query($conn, $order_sql)) { continue; }
     $order_id = mysqli_insert_id($conn);
-    
-    // Simpan order items
-    foreach($order_items_data as $item) {
+    $created_orders[] = $order_id;
+
+    // Simpan item untuk seller ini
+    foreach($item_indexes as $idx){
+        $item = $order_items_data[$idx];
         $product_id_escaped = mysqli_real_escape_string($conn, $item['product_id']);
         $product_name_escaped = mysqli_real_escape_string($conn, $item['product_name']);
         $quantity_escaped = mysqli_real_escape_string($conn, $item['quantity']);
         $price_escaped = mysqli_real_escape_string($conn, $item['price']);
         $subtotal_escaped = mysqli_real_escape_string($conn, $item['subtotal']);
-        
-        $item_sql = "INSERT INTO order_items (order_id, product_id, product_name, quantity, price, subtotal) 
-                     VALUES ('$order_id', '$product_id_escaped', '$product_name_escaped', '$quantity_escaped', '$price_escaped', '$subtotal_escaped')";
-        mysqli_query($conn, $item_sql);
-
+        mysqli_query($conn, "INSERT INTO order_items (order_id, product_id, product_name, quantity, price, subtotal) VALUES ('$order_id', '$product_id_escaped', '$product_name_escaped', '$quantity_escaped', '$price_escaped', '$subtotal_escaped')");
+        // Update stock jika ada
         $col_stock = mysqli_query($conn, "SHOW COLUMNS FROM products LIKE 'stock'");
         if($col_stock && mysqli_num_rows($col_stock)>0) {
             $prod = mysqli_fetch_assoc(mysqli_query($conn, "SELECT stock FROM products WHERE id='$product_id_escaped' LIMIT 1"));
@@ -115,29 +117,23 @@ if(mysqli_query($conn, $order_sql)) {
             }
         }
     }
-    
-    // Kirim notifikasi ke seller
+
+    // Notifikasi ke seller
     $notif_title = "Order Baru";
-    $notif_message = "Anda mendapat order baru dari $buyer_username dengan total Rp " . number_format($total, 0, ',', '.');
-    $notif_sql = "INSERT INTO notifications (user_username, title, message, type, link) 
-                  VALUES ('$seller_escaped', '$notif_title', '$notif_message', 'info', 'orders.php?order_id=$order_id')";
-    mysqli_query($conn, $notif_sql);
-    
-    // Kirim notifikasi ke buyer
+    $notif_message = "Anda mendapat order baru dari $buyer_username dengan total Rp " . number_format($seller_total, 0, ',', '.');
+    mysqli_query($conn, "INSERT INTO notifications (user_username, title, message, type, link) VALUES ('$seller_escaped', '$notif_title', '$notif_message', 'info', 'orders.php?order_id=$order_id')");
+
+    // Notifikasi ke buyer (per seller)
     $buyer_notif_title = "Order Berhasil";
-    $buyer_notif_message = "Order Anda telah dibuat. Silakan hubungi seller untuk pembayaran dan pengiriman.";
-    $buyer_notif_sql = "INSERT INTO notifications (user_username, title, message, type, link) 
-                        VALUES ('$buyer_escaped', '$buyer_notif_title', '$buyer_notif_message', 'success', 'my_orders.php?order_id=$order_id')";
-    mysqli_query($conn, $buyer_notif_sql);
-    
-    // Kosongkan cart
-    $_SESSION['cart'] = [];
-    
-    header("Location: checkout.php?order_id=$order_id&success=1");
-    exit;
-} else {
-    header("Location: cart.php?error=checkout_failed");
-    exit;
+    $buyer_notif_message = "Order Anda ke $seller_username telah dibuat.";
+    mysqli_query($conn, "INSERT INTO notifications (user_username, title, message, type, link) VALUES ('$buyer_escaped', '$buyer_notif_title', '$buyer_notif_message', 'success', 'my_orders.php?order_id=$order_id')");
 }
+
+// Kosongkan cart
+$_SESSION['cart'] = [];
+
+// Redirect ke Order Saya agar melihat semua order per toko
+header("Location: my_orders.php?success=1&created=" . urlencode(implode(',', $created_orders)));
+exit;
 ?>
 
