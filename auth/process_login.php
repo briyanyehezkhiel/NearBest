@@ -13,11 +13,21 @@ if (isset($_POST['login'])) {
         $row = mysqli_fetch_assoc($result);
 
         if (password_verify($password, $row['password'])) {
+            
             $_SESSION['username'] = $row['username'];
-            header("Location: ../pages/dashboard.php");
+            $_SESSION['role'] = $row['role'];
+
+            if ($row['role'] == 'admin') {
+                header("Location: ../admin/dashboard.php");
+            } elseif ($row['role'] == 'seller') {
+                header("Location: ../seller/dashboard.php");
+            } else {
+                header("Location: ../pages/dashboard.php");
+            }
             exit;
+
         } else {
-            echo "Password salah!";
+            echo "Password Salah!";
         }
     } else {
         echo "Username tidak ditemukan!";
