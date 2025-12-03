@@ -13,7 +13,7 @@ if($q && $row = mysqli_fetch_assoc($q)) { $user_id = (int)$row['id']; }
 $has_stock = false;
 $col_stock = mysqli_query($conn, "SHOW COLUMNS FROM products LIKE 'stock'");
 if($col_stock && mysqli_num_rows($col_stock)>0){ $has_stock = true; }
-$select = $has_stock ? "id,name,price,image,stock" : "id,name,price,image";
+$select = $has_stock ? "id,name,price,image,stock,expired_date" : "id,name,price,image,expired_date";
 $products = mysqli_query($conn, "SELECT $select FROM products WHERE seller_id='$user_id' ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
@@ -46,6 +46,22 @@ body{background:#f6f6f6}
             <h3><?=htmlspecialchars($p['name'])?></h3>
             <div class="price">Rp <?=number_format($p['price'])?></div>
             <div style="color:#666;font-size:13px;">Stok: <?=isset($p['stock']) ? (int)$p['stock'] : 0?></div>
+            <?php
+            $today = date('Y-m-d');
+            $exp = $p['expired_date'];
+
+            if ($exp) {
+                if ($exp < $today) {
+                    echo "<div style='color:red;font-weight:bold;font-size:13px;'>Expired ($exp)</div>";
+                } elseif ($exp == $today) {
+                    echo "<div style='color:orange;font-weight:bold;font-size:13px;'>Expired Hari Ini</div>";
+                } elseif ($exp <= date('Y-m-d', strtotime('+7 days'))) {
+                    echo "<div style='color:blue;font-size:13px;'>Hampir Expired ($exp)</div>";
+                } else {
+                    echo "<div style='color:green;font-size:13px;'>Kadaluarsa: $exp</div>";
+                }
+            }
+            ?>
             <a class="btn" href="edit_product.php?id=<?=htmlspecialchars($p['id'])?>">Edit</a>
         </div>
         <?php endwhile; ?>

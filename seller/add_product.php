@@ -33,11 +33,12 @@ if(isset($_POST['save'])){
     $category = mysqli_real_escape_string($conn, $_POST['category']);
     $tags = mysqli_real_escape_string($conn, $_POST['tags']);
     $stock = isset($_POST['stock']) ? (int)$_POST['stock'] : 0;
+    $expired_date = mysqli_real_escape_string($conn, $_POST['expired_date']);
     if($user_id>0 && $name!=='' && $price>0){
         if($has_stock){
-            $sql = "INSERT INTO products (name,price,image,description,category,tags,stock,seller_id) VALUES ('$name','$price','$image','$description','$category','$tags','$stock','$user_id')";
+            $sql = "INSERT INTO products (name, price, image, description, category, tags, stock, seller_id, expired_date) VALUES ('$name','$price','$image','$description','$category','$tags','$stock','$user_id','$expired_date')";
         } else {
-            $sql = "INSERT INTO products (name,price,image,description,category,tags,seller_id) VALUES ('$name','$price','$image','$description','$category','$tags','$user_id')";
+            $sql = "INSERT INTO products (name, price, image, description, category, tags, stock, seller_id, expired_date) VALUES ('$name','$price','$image','$description','$category','$tags','$stock','$user_id','$expired_date')";
         }
         if(mysqli_query($conn,$sql)){ $success = 'Produk berhasil ditambahkan'; } else { $error = mysqli_error($conn); }
     } else { $error = 'Data tidak valid'; }
@@ -76,6 +77,7 @@ input,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px}
             <div class="group"><label>Harga</label><input name="price" type="number" step="1" min="0" required></div>
             <div class="group"><label>Gambar (nama file di assets/images)</label><input name="image" required></div>
             <div class="group"><label>Deskripsi</label><textarea name="description"></textarea></div>
+            <div class="group"><label>Tanggal Kedaluwarsa</label><input type="date" name="expired_date" required></div>
             <div class="group"><label>Stok Tersedia</label><input name="stock" type="number" step="1" min="0" value="0"></div>
             <div class="group"><label>Kategori</label>
                 <select name="category" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px">

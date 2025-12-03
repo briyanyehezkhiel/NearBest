@@ -30,12 +30,13 @@ if(isset($_POST['save'])){
     $description = mysqli_real_escape_string($conn, $_POST['description']);
     $category = mysqli_real_escape_string($conn, $_POST['category']);
     $tags = mysqli_real_escape_string($conn, $_POST['tags']);
+    $expired_date = mysqli_real_escape_string($conn, $_POST['expired_date']);
     $stock = isset($_POST['stock']) ? (int)$_POST['stock'] : (isset($p['stock']) ? (int)$p['stock'] : 0);
     if($name!=='' && $price>0){
         if($has_stock){
-            $sql = "UPDATE products SET name='$name',price='$price',image='$image',description='$description',category='$category',tags='$tags',stock='$stock' WHERE id='$id' AND seller_id='$user_id'";
+            $sql = "UPDATE products SET name='$name',price='$price',image='$image',description='$description',category='$category',tags='$tags',stock='$stock',expired_date='$expired_date'WHERE id='$id' AND seller_id='$user_id'";
         } else {
-            $sql = "UPDATE products SET name='$name',price='$price',image='$image',description='$description',category='$category',tags='$tags' WHERE id='$id' AND seller_id='$user_id'";
+            $sql = "UPDATE products SET name='$name',price='$price',image='$image',description='$description',category='$category',tags='$tags',stock='$stock',expired_date='$expired_date'WHERE id='$id' AND seller_id='$user_id'";
         }
         if(mysqli_query($conn,$sql)){ $success = 'Produk berhasil diupdate'; } else { $error = mysqli_error($conn); }
     } else { $error = 'Data tidak valid'; }
@@ -74,6 +75,7 @@ input,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px}
             <div class="group"><label>Harga</label><input name="price" type="number" step="1" min="0" value="<?=htmlspecialchars($p['price'])?>" required></div>
             <div class="group"><label>Gambar (nama file di assets/images)</label><input name="image" value="<?=htmlspecialchars($p['image'])?>" required></div>
             <div class="group"><label>Deskripsi</label><textarea name="description"><?=htmlspecialchars($p['description'])?></textarea></div>
+            <div class="group"><label>Tanggal Kedaluwarsa</label><input type="date" name="expired_date" value="<?= $p['expired_date'] ?>"></div>
             <div class="group"><label>Stok Tersedia</label><input name="stock" type="number" step="1" min="0" value="<?=isset($p['stock'])?htmlspecialchars($p['stock']):0?>"></div>
             <div class="group"><label>Kategori</label>
                 <?php $cat = isset($p['category']) ? $p['category'] : ''; ?>
