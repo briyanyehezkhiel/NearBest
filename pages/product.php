@@ -98,7 +98,29 @@ body{font-family:Arial;background:#f6f6f6;margin:0}
         <h2><?php echo $product['name']; ?></h2>
         <p class="price">Rp <?php echo number_format($product['price']); ?></p>
         <p style="margin:6px 0; color:#666; font-size:14px;">Stok: <?php echo isset($product['stock']) ? (int)$product['stock'] : 0; ?></p>
+        <p style="margin:6px 0; font-size:14px;">
+            <strong>Kedaluwarsa: </strong>
+            <?php
+                $today = date('Y-m-d');
+                $exp = $product['expired_date'];
 
+                if(!$exp){
+                    echo "<span style='color:#999;'>- belum ditentukan -</span>";
+                } 
+                else if ($exp < $today) {
+                    echo "<span style='color:red;font-weight:bold;'>Expired ($exp)</span>";
+                }
+                else if ($exp === $today) {
+                    echo "<span style='color:orange;font-weight:bold;'>Expired Hari Ini</span>";
+                }
+                else if ($exp <= date('Y-m-d', strtotime('+7 days'))) {
+                    echo "<span style='color:blue;font-weight:bold;'>Hampir Expired ($exp)</span>";
+                }
+                else {
+                    echo "<span style='color:green;'>$exp</span>";
+                }
+            ?>
+        </p>
         <p class="desc"><?php echo $product['description']; ?></p>
 
 <!-- Category -->
