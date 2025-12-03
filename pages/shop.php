@@ -167,9 +167,9 @@ $result = mysqli_query($conn, "SELECT * FROM products $where_sql ORDER BY id DES
 <div class="categories">
     <h2>Category</h2>
     <div class="cat-box">
-        <a class="cat-item" href="shop.php?category=Foods">
+        <a class="cat-item" href="shop.php?category=Food">
             <img src="../assets/images/cat-food.png">
-            <p>Foods</p>
+            <p>Food</p>
         </a>
         <a class="cat-item" href="shop.php?category=Drinks">
             <img src="../assets/images/cat-drink.png">
@@ -179,13 +179,13 @@ $result = mysqli_query($conn, "SELECT * FROM products $where_sql ORDER BY id DES
             <img src="../assets/images/cat-snack.png">
             <p>Snacks</p>
         </a>
-        <a class="cat-item" href="shop.php?category=Dairy">
-            <img src="../assets/images/cat-dairy.png">
-            <p>Dairy</p>
-        </a>
-        <a class="cat-item" href="shop.php?category=Cleaning">
+        <a class="cat-item" href="shop.php?category=Hausehold">
             <img src="../assets/images/cat-cleaning.png">
-            <p>Cleaning</p>
+            <p>Hausehold</p>
+        </a>
+        <a class="cat-item" href="shop.php?category=Non-Food Other">
+            <img src="../assets/images/cat-dairy.png">
+            <p>Non-Food Other</p>
         </a>
     </div>
 </div>

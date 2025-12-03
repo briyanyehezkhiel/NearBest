@@ -81,11 +81,11 @@ input,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px}
                 <?php $cat = isset($p['category']) ? $p['category'] : ''; ?>
                 <select name="category" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px">
                     <option value="">Pilih kategori</option>
-                    <option value="Foods" <?= $cat==='Foods'?'selected':'' ?>>Foods</option>
+                    <option value="Food" <?= $cat==='Food'?'selected':'' ?>>Food</option>
                     <option value="Drinks" <?= $cat==='Drinks'?'selected':'' ?>>Drinks</option>
                     <option value="Snacks" <?= $cat==='Snacks'?'selected':'' ?>>Snacks</option>
-                    <option value="Dairy" <?= $cat==='Dairy'?'selected':'' ?>>Dairy</option>
-                    <option value="Cleaning" <?= $cat==='Cleaning'?'selected':'' ?>>Cleaning</option>
+                    <option value="Hausehold" <?= $cat==='Hausehold'?'selected':'' ?>>Hausehold</option>
+                    <option value="Non-Food Other" <?= $cat==='Non-Food Other'?'selected':'' ?>>Non-Food Other</option>
                 </select>
             </div>
             <div class="group"><label>Tags</label><input id="tags_input" name="tags" value="<?=htmlspecialchars($p['tags'])?>" placeholder="pisahkan dengan koma, contoh: segar, murah"></div>

@@ -82,11 +82,11 @@ input,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px}
             <div class="group"><label>Kategori</label>
                 <select name="category" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px">
                     <option value="">Pilih kategori</option>
-                    <option value="Foods">Foods</option>
+                    <option value="Food">Food</option>
                     <option value="Drinks">Drinks</option>
                     <option value="Snacks">Snacks</option>
-                    <option value="Dairy">Dairy</option>
-                    <option value="Cleaning">Cleaning</option>
+                    <option value="Hausehold">Hausehold</option>
+                    <option value="Non-Food Other">Non-Food Other</option>
                 </select>
             </div>
             <div class="group"><label>Tags</label><input id="tags_input" name="tags" placeholder="pisahkan dengan koma, contoh: segar, murah"></div>

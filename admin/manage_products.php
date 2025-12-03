@@ -215,11 +215,11 @@ img{width:60px;height:60px;object-fit:cover;border-radius:8px}
                 <label>Kategori 
                     <select name="category" id="f_category" style="padding:8px;border:1px solid #ddd;border-radius:6px;width:100%">
                         <option value="">Pilih kategori</option>
-                        <option value="Foods">Foods</option>
+                        <option value="Food">Food</option>
                         <option value="Drinks">Drinks</option>
                         <option value="Snacks">Snacks</option>
-                        <option value="Dairy">Dairy</option>
-                        <option value="Cleaning">Cleaning</option>
+                        <option value="Hausehold">Hausehold</option>
+                        <option value="Non-Food Other">Non-Food Other</option>
                     </select>
                 </label>
                 <label>Tags <input name="tags" id="f_tags" style="padding:8px;border:1px solid #ddd;border-radius:6px;width:100%" placeholder="pisahkan dengan koma, contoh: segar, murah"></label>
@@ -286,11 +286,11 @@ img{width:60px;height:60px;object-fit:cover;border-radius:8px}
                 <label>Kategori 
                     <select name="category" style="padding:8px;border:1px solid #ddd;border-radius:6px;width:100%">
                         <option value="">Pilih kategori</option>
-                        <option value="Foods">Foods</option>
+                        <option value="Food">Food</option>
                         <option value="Drinks">Drinks</option>
                         <option value="Snacks">Snacks</option>
-                        <option value="Dairy">Dairy</option>
-                        <option value="Cleaning">Cleaning</option>
+                        <option value="Hausehold">Hausehold</option>
+                        <option value="Non-Food Other">Non-Food Other</option>
                     </select>
                 </label>
                 <label>Tags <input id="create_tags" name="tags" style="padding:8px;border:1px solid #ddd;border-radius:6px;width:100%" placeholder="pisahkan dengan koma, contoh: segar, murah"></label>
