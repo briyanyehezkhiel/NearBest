@@ -85,6 +85,38 @@ td{padding:12px;border-bottom:1px solid #eee}
 .btn{padding:8px 12px;background:#dc3545;color:#fff;text-decoration:none;border:none;border-radius:6px;cursor:pointer}
 img{width:60px;height:60px;object-fit:cover;border-radius:8px}
 </style>
+<style>
+/* Supaya modal bisa diskrol jika layar kecil */
+#modal, 
+#modalCreate {
+    padding:20px;              /* memberi ruang agar modal tidak mepet tepi */
+    overflow-y:auto;           /* bisa scroll */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:fixed;
+    inset:0;
+    z-index:9999;   
+}
+
+/* Memperkecil modal */
+.modal-box{
+    background:#fff;
+    width:360px;
+    max-width:90%;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,.2);
+    padding:18px;
+}
+
+/* Responsif HP sangat kecil */
+@media(max-width:480px){
+    .modal-box{
+        width:95%;
+        padding:14px;
+    }
+}
+</style>
 </head>
 <body>
 <?php include "../includes/header.php"; ?>
@@ -173,7 +205,7 @@ img{width:60px;height:60px;object-fit:cover;border-radius:8px}
     </div>
 
     <div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);align-items:center;justify-content:center;">
-        <div style="background:#fff;width:520px;max-width:90%;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.2);padding:20px;">
+        <div class="modal-box">
             <h3 style="margin-bottom:12px;color:#333;">Edit Produk</h3>
             <form method="POST" id="editForm" style="display:flex;flex-direction:column;gap:10px">
                 <input type="hidden" name="id" id="f_id">
@@ -244,7 +276,7 @@ img{width:60px;height:60px;object-fit:cover;border-radius:8px}
         <button class="btn" style="background:#3b2db2" onclick="document.getElementById('modalCreate').style.display='flex'">Tambah Produk</button>
     </div>
     <div id="modalCreate" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);align-items:center;justify-content:center;">
-        <div style="background:#fff;width:520px;max-width:90%;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.2);padding:20px;">
+        <div class="modal-box">
             <h3 style="margin-bottom:12px;color:#333;">Tambah Produk</h3>
             <form method="POST" style="display:flex;flex-direction:column;gap:10px">
                 <label>Nama <input name="name" style="padding:8px;border:1px solid #ddd;border-radius:6px;width:100%" required></label>
