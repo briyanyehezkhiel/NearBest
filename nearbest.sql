@@ -41,12 +41,12 @@ CREATE TABLE `chat_messages` (
 --
 
 INSERT INTO `chat_messages` (`id`, `sender_username`, `receiver_username`, `message`, `created_at`, `is_read`) VALUES
-(1, 'briyanyehezkhiel', 'admin', 'hello', '2025-11-27 19:11:18', 1),
-(2, 'briyanyehezkhiel', 'admin', 'halo ', '2025-11-27 19:30:12', 1),
+(1, 'buyerdemo', 'admin', 'hello', '2025-11-27 19:11:18', 1),
+(2, 'buyerdemo', 'admin', 'halo ', '2025-11-27 19:30:12', 1),
 (3, 'admin', 'admin', 'hello ', '2025-11-27 19:52:13', 1),
-(4, 'admin', 'briyanyehezkhiel', 'iya', '2025-11-27 19:52:23', 1),
-(5, 'admin', 'briyanyehezkhiel', 'iya kenapa? ', '2025-11-29 18:08:37', 1),
-(6, 'briyanyehezkhiel', 'admin', 'seep dah bisa jalan deng ', '2025-11-29 18:15:53', 1);
+(4, 'admin', 'buyerdemo', 'iya', '2025-11-27 19:52:23', 1),
+(5, 'admin', 'buyerdemo', 'iya kenapa? ', '2025-11-29 18:08:37', 1),
+(6, 'buyerdemo', 'admin', 'seep dah bisa jalan deng ', '2025-11-29 18:15:53', 1);
 
 -- --------------------------------------------------------
 
@@ -70,17 +70,17 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `user_username`, `title`, `message`, `type`, `is_read`, `created_at`, `link`) VALUES
-(1, 'admin', 'Pesan Baru', 'Anda mendapat pesan dari briyanyehezkhiel', 'chat', 1, '2025-11-27 19:11:18', 'chat.php?to=briyanyehezkhiel'),
-(2, 'admin', 'Order Baru', 'Anda mendapat order baru dari briyanyehezkhiel dengan total Rp 30.000', 'info', 1, '2025-11-27 19:29:53', 'orders.php?order_id=1'),
-(3, 'briyanyehezkhiel', 'Order Berhasil', 'Order Anda telah dibuat. Silakan hubungi seller untuk pembayaran dan pengiriman.', 'success', 1, '2025-11-27 19:29:53', 'my_orders.php?order_id=1'),
-(4, 'admin', 'Pesan Baru', 'Anda mendapat pesan dari briyanyehezkhiel', 'chat', 1, '2025-11-27 19:30:12', 'chat.php?to=briyanyehezkhiel'),
+(1, 'admin', 'Pesan Baru', 'Anda mendapat pesan dari buyerdemo', 'chat', 1, '2025-11-27 19:11:18', 'chat.php?to=buyerdemo'),
+(2, 'admin', 'Order Baru', 'Anda mendapat order baru dari buyerdemo dengan total Rp 30.000', 'info', 1, '2025-11-27 19:29:53', 'orders.php?order_id=1'),
+(3, 'buyerdemo', 'Order Berhasil', 'Order Anda telah dibuat. Silakan hubungi seller untuk pembayaran dan pengiriman.', 'success', 1, '2025-11-27 19:29:53', 'my_orders.php?order_id=1'),
+(4, 'admin', 'Pesan Baru', 'Anda mendapat pesan dari buyerdemo', 'chat', 1, '2025-11-27 19:30:12', 'chat.php?to=buyerdemo'),
 (5, 'admin', 'Pesan Baru', 'Anda mendapat pesan dari admin', 'chat', 1, '2025-11-27 19:52:13', 'chat.php?to=admin'),
-(6, 'briyanyehezkhiel', 'Pesan Baru', 'Anda mendapat pesan dari admin', 'chat', 1, '2025-11-27 19:52:23', 'chat.php?to=admin'),
-(7, 'briyanyehezkhiel', 'Pesan Baru', 'Anda mendapat pesan dari admin', 'chat', 1, '2025-11-29 18:08:37', 'chat.php?to=admin'),
-(8, 'seller', 'Order Baru', 'Anda mendapat order baru dari briyanyehezkhiel dengan total Rp 20.000', 'info', 0, '2025-11-29 18:15:14', 'orders.php?order_id=2'),
-(9, 'briyanyehezkhiel', 'Order Berhasil', 'Order Anda telah dibuat. Silakan hubungi seller untuk pembayaran dan pengiriman.', 'success', 1, '2025-11-29 18:15:14', 'my_orders.php?order_id=2'),
-(10, 'admin', 'Pesan Baru', 'Anda mendapat pesan dari briyanyehezkhiel', 'chat', 1, '2025-11-29 18:15:53', 'chat.php?to=briyanyehezkhiel'),
-(11, 'briyanyehezkhiel', 'Status Order Diupdate', 'Status order #1 telah diupdate menjadi: CONFIRMED', 'info', 0, '2025-11-29 18:18:52', 'my_orders.php?order_id=1');
+(6, 'buyerdemo', 'Pesan Baru', 'Anda mendapat pesan dari admin', 'chat', 1, '2025-11-27 19:52:23', 'chat.php?to=admin'),
+(7, 'buyerdemo', 'Pesan Baru', 'Anda mendapat pesan dari admin', 'chat', 1, '2025-11-29 18:08:37', 'chat.php?to=admin'),
+(8, 'seller', 'Order Baru', 'Anda mendapat order baru dari buyerdemo dengan total Rp 20.000', 'info', 0, '2025-11-29 18:15:14', 'orders.php?order_id=2'),
+(9, 'buyerdemo', 'Order Berhasil', 'Order Anda telah dibuat. Silakan hubungi seller untuk pembayaran dan pengiriman.', 'success', 1, '2025-11-29 18:15:14', 'my_orders.php?order_id=2'),
+(10, 'admin', 'Pesan Baru', 'Anda mendapat pesan dari buyerdemo', 'chat', 1, '2025-11-29 18:15:53', 'chat.php?to=buyerdemo'),
+(11, 'buyerdemo', 'Status Order Diupdate', 'Status order #1 telah diupdate menjadi: CONFIRMED', 'info', 0, '2025-11-29 18:18:52', 'my_orders.php?order_id=1');
 
 -- --------------------------------------------------------
 
@@ -108,8 +108,8 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `buyer_id`, `buyer_username`, `seller_username`, `seller_store_name`, `seller_store_address`, `total`, `total_amount`, `status`, `notes`, `created_at`, `updated_at`) VALUES
-(1, NULL, 'briyanyehezkhiel', 'admin', NULL, NULL, NULL, '30000.00', 'confirmed', NULL, '2025-11-28 02:29:53', '2025-11-29 18:18:52'),
-(2, NULL, 'briyanyehezkhiel', 'seller', '', '', NULL, '20000.00', 'pending', NULL, '2025-11-30 01:15:14', '2025-11-29 18:15:14');
+(1, NULL, 'buyerdemo', 'admin', NULL, NULL, NULL, '30000.00', 'confirmed', NULL, '2025-11-28 02:29:53', '2025-11-29 18:18:52'),
+(2, NULL, 'buyerdemo', 'seller', '', '', NULL, '20000.00', 'pending', NULL, '2025-11-30 01:15:14', '2025-11-29 18:15:14');
 
 -- --------------------------------------------------------
 
@@ -182,7 +182,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`) VALUES
-(1, 'briyanyehezkhiel', 'briyanyehezkhiel@gmail.com', '$2y$10$ZNKj0UHcQB9BiaEJn/BSDOFzyK2MnvDtAgjqSBSwcHdQvoJ6K2ItO', 'buyer'),
+(1, 'buyerdemo', 'buyer@gmail.com', '$2y$10$ZNKj0UHcQB9BiaEJn/BSDOFzyK2MnvDtAgjqSBSwcHdQvoJ6K2ItO', 'buyer'),
 (2, 'seller', 'seller@gmail.com', '$2y$10$OBHp.fed95rYcg0SLfpTte4xd9UCDfWPDEMum21Z/3gZg/jEeJrCC', 'seller'),
 (5, 'admin', 'admin@gmail.com', '$2y$10$IpE6BPpgS/QVnHng30R8x.Z8P/TAgpTUDrNynVOd7hrfJvwNQNnty', 'admin');
 
