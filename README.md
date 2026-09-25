@@ -39,6 +39,28 @@ The system supports product management, marketplace activities, order management
 - Product category management
 - Product label management
 
+## Screenshots
+
+### Home Page
+
+(<img width="3840" height="12936" alt="home" src="https://github.com/user-attachments/assets/51e16dd0-dfe9-403e-9afb-613ae31cd36d" />)
+
+### Shop List
+
+<img width="3840" height="6400" alt="shop-list" src="https://github.com/user-attachments/assets/81b6010a-8f7c-4722-aa52-aa5c58e264c4" />
+
+### Product Details
+
+<img width="3858" height="4706" alt="product-details" src="https://github.com/user-attachments/assets/91090dbb-616b-4ba8-a2a5-9d2680ed0b42" />
+
+### Shopping Cart
+
+<img width="3840" height="3852" alt="shopping-cart" src="https://github.com/user-attachments/assets/ebf7ff11-0a6c-4d28-a5d2-0863d4029f7c" />
+
+### Chat
+
+<img width="3850" height="3448" alt="chat" src="https://github.com/user-attachments/assets/5b33af0f-acd3-429f-9a5f-bfae64396528" />
+
 ## Technologies
 
 - PHP
